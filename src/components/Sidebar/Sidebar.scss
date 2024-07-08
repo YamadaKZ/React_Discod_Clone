@@ -1,0 +1,60 @@
+.sidebar {
+    display: flex;
+    flex: 0.35;
+    height: 100vh;
+    background-color: rgba(9, 36, 77, 0.799);
+
+    .sidebarLeft {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 15px;
+        background-color: rgb(10, 18, 60);
+        padding: 7px 15px;
+
+        .serverIcon {
+            width: 55px;
+            height: 55px;
+            background-color: rgb(157, 3, 196);
+            border-radius: 9999px;
+            margin-bottom: 10px;
+            position: relative;
+
+            //アニメーション追加
+            animation: changeColor 5s infinite;
+
+            img {
+                position: absolute;
+                width: 50px;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                border-radius: 50%;
+
+            }
+        }
+
+    }
+}
+
+// アニメーションの定義
+@keyframes changeColor {
+    0% {
+        background-color: rgb(157, 3, 196);
+    }
+    20% {
+        background-color: rgb(0, 204, 255);
+    }
+    40% {
+        background-color: rgb(0, 255, 102);
+    }
+    60% {
+        background-color: rgb(255, 255, 0);
+    }
+    80% {
+        background-color: rgb(255, 102, 0);
+    }
+    100% {
+        background-color: rgb(157, 3, 196);
+    }
+}
