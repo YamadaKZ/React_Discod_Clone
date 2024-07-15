@@ -5,7 +5,7 @@ import ChatMessage from "./ChatMessage";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 import {  useAppSelector } from "../../app/hooks";
-import { useEffect, useState } from "react";
+import { useEffect, useState , useRef} from "react";
 import { addDoc, collection, CollectionReference, DocumentData, DocumentReference, onSnapshot, orderBy, query, serverTimestamp, Timestamp } from "firebase/firestore";
 import { db } from "../../firebase";
 import useSubCollection from "../../hooks/useSubCollection";
@@ -18,6 +18,15 @@ const Chat = () => {
     const channelName = useAppSelector((state) =>state.channel.channelName)
     const user = useAppSelector((state) => state.user.user)
     const {subDocuments: messages} = useSubCollection("channels", "messages")
+    const messagesEndRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [messages]);
+    
+
 
 
     const sendMessage = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -46,6 +55,8 @@ const Chat = () => {
             {messages.map((message, index) => (
                 <ChatMessage key={index} message={message.message} timestamp={message.timestamp} user={message.user} />
             ))}
+            <div ref={messagesEndRef} />
+
         </div>
 
         <div className="chatInput" >
