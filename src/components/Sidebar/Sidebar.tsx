@@ -1,3 +1,4 @@
+import { useState } from "react";
 import "./Sidebar.scss";
 import SidebarChannel from "./SidebarChannel";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -10,16 +11,12 @@ import { useAppSelector } from "../../app/hooks";
 import useCollection from "../../hooks/useCollection";
 import { addDoc, collection } from "firebase/firestore";
 
-
-
-
 const Sidebar = () => {
-
+    const [isChannelsExpanded, setIsChannelsExpanded] = useState(true);
     const user = useAppSelector((state) => state.user.user);
-    const { documents: channels} = useCollection("channels")
+    const { documents: channels} = useCollection("channels");
 
-
-    const addChannel  = async () => {
+    const addChannel = async () => {
         let channelName : string | null = prompt("新しいチャンネルを作成します")
 
         if(channelName) {
@@ -29,54 +26,55 @@ const Sidebar = () => {
         }
     };
 
+    const toggleChannels = () => {
+        setIsChannelsExpanded(!isChannelsExpanded);
+    };
 
     return (
-        <div className="sidebar" >
-
+        <div className="sidebar">
             {/* sidebarLeft */}
             <div className="sidebarLeft">
                 <div className="serverIcon">
-                    <img src="./Robot.png" alt=""  />
-                </div>
-                <div className="serverIcon">
-                    <img src="./Robot.png" alt=""  />
+                    <img src="./Robot.png" alt="" />
                 </div>
             </div>
             {/* sidebarRight */}
             <div className="sidebarRight">
-                <div className="seidebarTop" >
-                    <h3>Discod</h3>
+                <div className="seidebarTop">
+                    <h3>Discord</h3>
                     <ExpandMoreIcon />
                 </div>
 
                 {/* sidebarChannels */}
                 <div className="sidebarChannels">
                     <div className="sidebarChannelsHeader">
-                        <div className="sidebarHeader">
-                            <ExpandMoreIcon />
-                            <h4>プログラミングチャンネル</h4>
+                        <div className="sidebarHeader" onClick={toggleChannels}>
+                            <ExpandMoreIcon className={isChannelsExpanded ? "" : "collapsed"} />
+                            <h4>テキストチャンネル</h4>
                         </div>
-                        <AddIcon  className="sidebarAddIcon" onClick = {() => addChannel()} />
+                        <AddIcon className="sidebarAddIcon" onClick={addChannel} />
                     </div>
-                    <div className="sidebarChannelList">
-                        {channels.map((channel) => (
-                            <SidebarChannel  channel= {channel} id = {channel.id} key={channel.id}/>
-                        ))}
-                    </div>
+                    {isChannelsExpanded && (
+                        <div className="sidebarChannelList">
+                            {channels.map((channel) => (
+                                <SidebarChannel channel={channel} id={channel.id} key={channel.id} />
+                            ))}
+                        </div>
+                    )}
 
                     <div className="sidebarFooter">
                         <div className="sidebarAccount">
                             <img src={user?.photo} alt="" onClick={() => auth.signOut()} />
-                            <div className="accountName" >
+                            <div className="accountName">
                                 <h4>{user?.displayName}</h4>
                                 <span>#{user?.uid.substring(0,4)}</span>
                             </div>
                         </div>
                         <div className="sidebarVoice">
-                                <MicIcon />
-                                <HeadphonesIcon />
-                                <SettingsIcon />
-                            </div>
+                            <MicIcon />
+                            <HeadphonesIcon />
+                            <SettingsIcon />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -84,4 +82,4 @@ const Sidebar = () => {
     );
 };
 
-export default Sidebar
+export default Sidebar;

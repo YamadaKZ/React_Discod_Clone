@@ -62,6 +62,15 @@
 
                 .sidebarHeader {
                     display: flex;
+                    cursor: pointer;
+
+                    .MuiSvgIcon-root {
+                        transition: transform 0.3s ease;
+                        
+                        &.collapsed {
+                            transform: rotate(-90deg);
+                        }
+                    }
                 }
 
                 .sidebarAddIcon {
